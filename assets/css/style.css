@@ -284,13 +284,13 @@ body.modal-open .chat-window-wrapper {
 .header .header-quick-nav {
   padding-right: 10px;
   height: 60px;
-  /*-webkit-transition-duration: 1;
+  -webkit-transition-duration: 1;
   -moz-transition-duration: 1s;
   transition-duration: 1s;
   transition-timing-function: ease-in-out;
   -webkit-transition-property: -webkit-transform, opacity;
   -moz-transition-property: -moz-transform, opacity;
-  transition-property: transform, opacity;*/
+  transition-property: transform, opacity;
 }
 .header .header-separation .notifcation-center:hover{
   cursor: auto;

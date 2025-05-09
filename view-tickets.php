@@ -95,7 +95,7 @@ check_login();
                     <div class="form-actions">
                       <div class="post col-md-12">
                         <div class="user-profile-pic-wrapper">
-                          <div class="user-profile-pic-normal"> <img width="35" height="35" data-src-retina="assets/img/admin.jpg" data-src="assets/img/admin.jpg" src="assets/img/admin.jpg" alt="Admin"> </div>
+                          <div class="user-profile-pic-normal"> <img width="35" height="35" src="Logo-Gobierno-en-Vertical (1).png" alt="Admin"> </div>
                         </div>
                         <div class="info-wrapper">
 
