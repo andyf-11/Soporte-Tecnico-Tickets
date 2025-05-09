@@ -6150,7 +6150,7 @@ h4.custom-line-height {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1em 2em;
+  padding: 1em 1em;
   max-width: 100%;
   width: 400px;
   border: none;
@@ -7604,6 +7604,7 @@ input[type="checkbox"] {
   height: 100%;
   padding: 2rem 0;
 }
+
 .logo-container{
   display: flex;
   justify-content: center;
@@ -7804,7 +7805,7 @@ input[type="checkbox"] {
 .cbp_tmtimeline > li .cbp_tmicon {
   width: 40px;
   height: 40px;
-  speak: none;
+  /*speak: none;*/
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -8134,6 +8135,24 @@ input[type="checkbox"] {
   font-weight: 300;
   text-indent: -2px;
 }
+@media (max-width: 575.98px) {
+  .error-body {
+    padding: 1rem 0.5rem;
+    font-size: 14px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: color 12s ease-in-out infinite;
+    background: linear-gradient(45deg, #d8f6fa, #ffe4dc) !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .error-body {
+    padding: 2rem 1.5rem;
+    font-size: 16px;
+    
+  }
+}
+
 @media (max-width: 500px) {
   #Parks.grid .mix {
     width: 100%;

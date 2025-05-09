@@ -26,7 +26,7 @@ if (isset($_POST['login'])) {
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <meta charset="utf-8" />
-  <title>CWEB Acceso Administrativo</title>
+  <title>SPE Acceso Administrativo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta content="" name="description" />
   <meta content="" name="author" />
@@ -51,6 +51,11 @@ if (isset($_POST['login'])) {
         <h2 class="text-center text-white"><strong>Acceso Administrativo</strong></h2>
         <hr>
       </div>
+      <div class="col-md-5"></div>
+        <div class="form-group text-center">
+          <a class="btn_back" href="./../">Volver al Sitio</a>
+      </div>
+          <div class="col-md-5 text-center"></div>
       <div class="col-md-5 ">
         <form id="login-form" class="login-form" action="" method="post">
           <p style="color: #F00"><?php echo $_SESSION['action1']; ?><?php echo $_SESSION['action1'] = ""; ?></p>
@@ -61,14 +66,11 @@ if (isset($_POST['login'])) {
           <div class="form-group">
             <label for="password" class="control-label">Contraseña</label>
             <input type="password" class="form-control rounded-0" id="password" name="password" required="required">
-          </div>
-          <div class="col-md-5"></div>
-          <div class="form-group text-center">
-            <a class="btn_back" href="./../">Volver al Sitio</a>
-            <div class="col-md-5 text-center">
+          <div class="col-md-5">
+             </div>
               <button class="btn btn-primary btn-cons pull-right" name="login" type="submit">Acceder</button>
             </div>
-            
+          </div> 
           </div>
         </form>
       </div>
