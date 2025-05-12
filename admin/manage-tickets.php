@@ -11,6 +11,18 @@ if (isset($_POST['update'])) {
   mysqli_query($con, "update ticket set admin_remark='$adminremark',status='closed' where id='$fid'");
   echo '<script>alert("Ticket ha sido actualizado, correctamente"); location.replace(document.referrer)</script>';
 }
+
+if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+    $nombreImagen = basename($_FILES['imagen']['name']);
+    $rutaTemporal = $_FILES['imagen']['tmp_name'];
+    $rutaDestino = 'uploads/' . $nombreImagen;
+
+    if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
+        // Guarda esta ruta en la base de datos
+        $sql = "INSERT INTO tickets (asunto, descripcion, imagen_ruta, ...) VALUES ('$asunto', '$descripcion', '$rutaDestino', ...)";
+        
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -98,6 +110,19 @@ if (isset($_POST['update'])) {
                         <br>
                         <textarea name="aremark" cols="50" rows="4" required="true"><?php echo $row['admin_remark']; ?></textarea>
                         <hr>
+                        <div class="form-group_admin">
+                          <?php if (!empty($ticket['attachment'])): ?>
+                        <div class="mt-3">
+                          <strong>Imagen adjunta:</strong><br>
+                          <img src="<?php echo htmlspecialchars($ticket['attachment']); ?>" 
+                            alt="Imagen del ticket" 
+                            style="max-width: 400px;" 
+                            class="img-thumbnail mt-2">
+                        </div>
+                      <?php else: ?>
+                        <p><em>No se adjuntó ninguna imagen.</em></p>
+                      <?php endif; ?>
+                        </div>
                         <p class="small-text">
                           <input name="update" type="submit" class="txtbox1" id="Update" value="Actualizar" size="40" />
                           <input name="frm_id" type="hidden" id="frm_id" value="<?php echo $row['id']; ?>" />

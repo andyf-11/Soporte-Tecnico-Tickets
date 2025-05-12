@@ -77,7 +77,7 @@ INSERT INTO `prequest` (`id`, `name`, `email`, `contactno`, `company`, `services
 --
 
 CREATE TABLE `ticket` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL ,
   `ticket_id` varchar(11) DEFAULT NULL,
   `email_id` varchar(300) DEFAULT NULL,
   `subject` varchar(300) DEFAULT NULL,
@@ -166,6 +166,7 @@ INSERT INTO `usercheck` (`id`, `logindate`, `logintime`, `user_id`, `username`, 
 (10, '2023/01/12', '07:54:47pm', 4, 'Lorena Cliente', 'lcliente@cweb.com', 0x3a3a31, 0x4e6f6d62726520646520686f73742e20, '', ''),
 (11, '2023/01/14', '08:14:36pm', 5, 'Equis', 'ecorreo@cweb.com', 0x3a3a31, 0x4e6f6d62726520646520686f73742e20, '', '');
 
+
 --
 -- Índices para tablas volcadas
 --
@@ -233,6 +234,7 @@ ALTER TABLE `user`
 --
 ALTER TABLE `usercheck`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

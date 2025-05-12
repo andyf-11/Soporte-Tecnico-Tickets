@@ -43,6 +43,16 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
 } else {
     echo "No se subió ninguna imagen.";
 }
+
+if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+    $nombreImagen = basename($_FILES['imagen']['name']);
+    $rutaDestino = 'uploads/' . time() . '_' . $nombreImagen;
+
+    if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+        // Guardas esta ruta en la base de datos
+        $attachment = $rutaDestino;
+    }
+}
 ?>
 
 <!DOCTYPE html>

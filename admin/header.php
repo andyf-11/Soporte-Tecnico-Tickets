@@ -7,7 +7,7 @@
           </a> </li>
       </ul>
       <h2>
-        <a href="https://www.configuroweb.com/46-aplicaciones-gratuitas-en-php-python-y-javascript/#Aplicaciones-gratuitas-en-PHP,-Python-y-Javascript" class="text-white"><strong>Administración</strong></a>
+        <a href="home.php" class="text-white"><strong>Administración</strong></a>
       </h2>
     </div>
     <div class="header-quick-nav">
@@ -27,11 +27,15 @@
             </a>
             <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
               <li class="divider"></li>
+              <li><a href="/../"><i class="fas fa-bell"></i>&nbsp;&nbsp;Notificaciones</a></li>
               <li><a href="logout.php"><i class="fa fa-power-off"></i>&nbsp;&nbsp;Cerrar Sesión</a></li>
             </ul>
           </li>
 
         </ul>
+      </div>
+      
+
       </div>
       <!-- END CHAT TOGGLER -->
     </div>
