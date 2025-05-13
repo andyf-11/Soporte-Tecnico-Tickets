@@ -72,15 +72,12 @@ include("dbconnection.php");
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 
 
 
-  </div>
-  </div>
   <script src="assets/plugins/jquery-1.8.3.min.js" type="text/javascript"></script>
   <script src="assets/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
   <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>

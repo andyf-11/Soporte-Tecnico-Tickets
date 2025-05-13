@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'connection.php';
 //echo $_SESSION['id'];
 //$_SESSION['msg'];
 include("dbconnection.php");
@@ -28,31 +29,21 @@ if (isset($_POST['send'])) {
     }
 }
 
-if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-    $nombreImagen = $_FILES['imagen']['name'];
-    $rutaTemporal = $_FILES['imagen']['tmp_name'];
-    $rutaDestino = 'uploads/' . basename($nombreImagen);
+ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
+            $og_name = basename($_FILES['imagen']['name']);
+            $rutaTemporal = $_FILES['imagen']['tmp_name'];
+            $nombreUnico = uniqid() . "_" . $og_name;
+            $rutaDestino = 'uploads/' . $nombreUnico;
 
-    // Puedes validar la extensión o tamaño aquí
+            if (!is_dir('uploads')) {
+                mkdir('uploads', 0777, true);
+            }
 
-    if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
-        echo "Imagen subida exitosamente.";
-    } else {
-        echo "Error al subir la imagen.";
-    }
-} else {
-    echo "No se subió ninguna imagen.";
-}
-
-if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-    $nombreImagen = basename($_FILES['imagen']['name']);
-    $rutaDestino = 'uploads/' . time() . '_' . $nombreImagen;
-
-    if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
-        // Guardas esta ruta en la base de datos
-        $attachment = $rutaDestino;
-    }
-}
+            if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
+                $stmt = $pdo->prepare("INSERT INTO ticket_images (ticket_id, og_name, route_archivo) VALUES (?, ?, ?)");
+                $stmt->execute([$ticket_id, $og_name, $rutaDestino]);
+            }
+        }
 ?>
 
 <!DOCTYPE html>
@@ -160,7 +151,6 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
                                         <label class="col-md-3 col-xs-12 control-label"> Subir Imágen</label>
                                         <div class="col-md-6 col-xs-12">
                                              <input type="file" class="form-control-file" name="imagen" id="imagen" accept="image/*">
-
                                         </div>
                                     </div>
 

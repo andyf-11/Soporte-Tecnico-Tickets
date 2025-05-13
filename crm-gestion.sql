@@ -1,3 +1,4 @@
+-- Active: 1747067405066@@127.0.0.1@3306@crm-gestion
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -167,7 +168,6 @@ INSERT INTO `usercheck` (`id`, `logindate`, `logintime`, `user_id`, `username`, 
 (11, '2023/01/14', '08:14:36pm', 5, 'Equis', 'ecorreo@cweb.com', 0x3a3a31, 0x4e6f6d62726520646520686f73742e20, '', '');
 
 
---
 -- Índices para tablas volcadas
 --
 
@@ -187,6 +187,7 @@ ALTER TABLE `prequest`
 -- Indices de la tabla `ticket`
 --
 ALTER TABLE `ticket`
+  MODIFY `id` INT(11) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`id`);
 
 --

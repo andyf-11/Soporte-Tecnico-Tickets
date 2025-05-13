@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'connection.php';
 //echo $_SESSION['id'];
 //$_SESSION['msg'];
 include("dbconnection.php");
@@ -13,16 +14,26 @@ if (isset($_POST['update'])) {
 }
 
 if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-    $nombreImagen = basename($_FILES['imagen']['name']);
+    $og_name = basename($_FILES['imagen']['name']);
     $rutaTemporal = $_FILES['imagen']['tmp_name'];
-    $rutaDestino = 'uploads/' . $nombreImagen;
+    $rutaDestino = 'uploads/' . uniqid() . "_" . $og_name;
+
+    if (!is_dir('uploads')) {
+        mkdir('uploads', 0777, true);
+    }
 
     if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
-        // Guarda esta ruta en la base de datos
-        $sql = "INSERT INTO tickets (asunto, descripcion, imagen_ruta, ...) VALUES ('$asunto', '$descripcion', '$rutaDestino', ...)";
-        
+        // Aquí asegúrate de tener ya creado el ticket y tener su ID
+        // Ejemplo: después de insertar ticket, obtuviste:
+        // $ticket_id = $pdo->lastInsertId();
+
+        $sql = "INSERT INTO ticket_images (ticket_id, og_name, route_archivo) VALUES (?, ?, ?)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$ticket_id, $og_name, $rutaDestino]);
     }
 }
+
+
 ?>
 <!DOCTYPE html>
 <html>
