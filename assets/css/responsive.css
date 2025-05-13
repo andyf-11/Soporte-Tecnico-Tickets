@@ -78,7 +78,7 @@
     float: left;
     position: fixed;
     width: 250px;
-    margin-top: 58px;
+    margin-top: 50px;
     padding-bottom: 105px;
   }
   .menu-non-fixed .footer-widget {
@@ -90,7 +90,8 @@
     float: left;
     height: 100%;
     max-width: 250px;
-    width: 100%;
+    width: 150%;
+    background-size: cover;
   }
   .page-sidebar.fixed {
     position: fixed;
@@ -255,7 +256,7 @@
   .page-sidebar.opened .page-sidebar-wrapper > ul > li > a:hover,
   .page-sidebar.opened .page-sidebar-wrapper > ul > li:hover > a {
     background: #1b1e24;
-    /* border-left:4px solid  #0aa699;*/
+    border-left:4px solid  #0aa699;
     padding: 11.5px 31px;
     color: #fff;
   }
@@ -413,18 +414,25 @@
     position: absolute;
     width: 65px;
     margin: 0;
-    overflow: visible;
+    overflow: hidden;
     z-index: 90;
   }
   .page-sidebar .page-sidebar-wrapper {
-    overflow: scroll !important;
+    overflow: hidden !important;
   }
   .page-sidebar .page-sidebar-wrapper > ul {
     width: 45px;
     margin: 0;
-    padding-top: 70px;
+    padding-top: 40px;
     
   }
+  .page-sidebar .page-sidebar-wrapper > ul > li {
+    display: flex;
+    text-align: left;
+    margin: -12px;
+    padding: 10px;
+    border: 0px;
+}
   .page-sidebar .page-sidebar-wrapper > ul > li > a {
     padding: 13px;
     color: #fff;
@@ -467,7 +475,7 @@
     display: none;
   }
   .page-sidebar {
-    background-color: #0aa699 !important;
+    background-color: #02302b !important;
   }
   .page-sidebar .page-sidebar-wrapper > ul > li.open > a,
   .page-sidebar .page-sidebar-wrapper > ul > li > a:hover,
@@ -488,7 +496,7 @@
     min-width: 200px;
   }
   .page-sidebar .page-sidebar-wrapper > .side-bar-widgets {
-    display: none;
+    display: flex;
   }
   .footer-widget {
     display: none !important;

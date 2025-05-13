@@ -74,22 +74,20 @@
     padding-top: 58px;
   }
   .page-sidebar {
-    display: inline-block;
-    float: left;
-    position: fixed;
     width: 250px;
-    margin-top: 58px;
-    padding-bottom: 105px;
+    min-width: 200px;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
   }
   .menu-non-fixed .footer-widget {
     z-index: 100;
   }
   .page-sidebar .page-sidebar-wrapper {
     display: inline-block;
-    float: right;
+    float: left;
     height: 100%;
     max-width: 250px;
-    width: 100%;
   }
   .page-sidebar.fixed {
     position: fixed;
@@ -230,7 +228,7 @@
     width: 45px;
     position: absolute;
     height: 200%;
-    background-color: #0aa699 !important;
+    background-color: #095f58 !important;
   }
   .page-sidebar.opened .inner-menu {
     display: inline-block;
@@ -245,7 +243,7 @@
   .page-sidebar.opened .page-sidebar-wrapper > ul > li a i {
     color: #8b91a0;
     width: 20px;
-    text-align: center;
+    text-align: left;
     display: inline-block;
     margin-right: 10px;
   }
@@ -411,11 +409,14 @@
     position: absolute;
     width: 50px;
     margin: 0;
-    overflow: visible;
+    overflow: auto;
     z-index: 90;
+    height: 150%;
+    transform: translateX(-100%);
   }
   .page-sidebar .page-sidebar-wrapper {
-    overflow: visible !important;
+    overflow: auto !important;
+    scrollbar-width: 5%;
   }
   .page-sidebar .page-sidebar-wrapper > ul {
     width: 50px;
@@ -423,11 +424,15 @@
     padding-top: 60px;
   }
   .page-sidebar .page-sidebar-wrapper > ul > li > a {
-    padding: 13px;
+    padding: 11px;
     color: #fff;
   }
   .page-sidebar .page-sidebar-wrapper > ul > li a i {
     color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
   }
   .page-sidebar .user-info {
     display: none;
@@ -462,9 +467,9 @@
   .page-sidebar .profile-wrapper {
     display: none;
   }
-  .page-sidebar {
+  /*.page-sidebar {
     background-color: #0aa699 !important;
-  }
+  }*/
   .page-sidebar .page-sidebar-wrapper > ul > li.open > a,
   .page-sidebar .page-sidebar-wrapper > ul > li > a:hover,
   .page-sidebar .page-sidebar-wrapper > ul > li:hover > a {

@@ -1247,6 +1247,8 @@ body.modal-open .chat-window-wrapper {
   -webkit-transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
   z-index: 6;
+  width: calc(100% - 250px); 
+  box-sizing: border-box;
 }
 .page-content.condensed {
   margin-right: 50px;

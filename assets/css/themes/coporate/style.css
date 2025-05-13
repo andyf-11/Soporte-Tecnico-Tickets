@@ -472,9 +472,15 @@ body.modal-open .chat-window-wrapper {
   background-color: #323237 !important;
   height: 100%;
   font-family: 'Open Sans';
-  -webkit-backface-visibility: hidden;
+  width: 250px; /* <--- AÑADIDO: ancho fijo adecuado */
+  position: fixed; /* <--- Para que se mantenga visible */
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  -webkit-backface-visibility: auto;
   -webkit-transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
+  z-index: 1000; /* por si tienes otros elementos que lo tapan */
 }
 .page-sidebar.full-length {
   padding-bottom: 57px;
@@ -498,9 +504,9 @@ body.modal-open .chat-window-wrapper {
   overflow-y: auto;
 }
 .page-sidebar .page-sidebar-wrapper > ul {
-  list-style: none;
-  margin: 0;
+   list-style: none;
   padding: 0;
+  margin: 0;
 }
 .page-sidebar .page-sidebar-wrapper > ul > li {
   display: block;
@@ -510,14 +516,15 @@ body.modal-open .chat-window-wrapper {
 }
 .page-sidebar .page-sidebar-wrapper > ul > li > a {
   color: #b2b2b2;
-  display: block;
-  position: relative;
-  margin: 0;
-  border: 0px;
-  padding: 11.5px 31px 11.5px 31px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
   text-decoration: none;
-  font-size: 14px;
-  font-weight: normal;
+  padding: 10px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
 }
 .page-sidebar .page-sidebar-wrapper > ul > li > a.open {
   background: #313131;
@@ -879,7 +886,8 @@ body.modal-open .chat-window-wrapper {
   -webkit-transition: -webkit-transform 0.3s ease, left 0.3s ease, right 0.3s ease;
   transition: transform 0.3s ease, left  0.3s ease, right  0.3s ease;
   margin: 0px;
-  padding: 0px;
+  margin-left: 250px; 
+  /*padding: 0px;*/
   position: relative;
   height: 100%;
   left: 0;
