@@ -152,6 +152,7 @@ CREATE TABLE `usercheck` (
   `country` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+
 --
 -- Volcado de datos para la tabla `usercheck`
 --
@@ -167,6 +168,15 @@ INSERT INTO `usercheck` (`id`, `logindate`, `logintime`, `user_id`, `username`, 
 (10, '2023/01/12', '07:54:47pm', 4, 'Lorena Cliente', 'lcliente@cweb.com', 0x3a3a31, 0x4e6f6d62726520646520686f73742e20, '', ''),
 (11, '2023/01/14', '08:14:36pm', 5, 'Equis', 'ecorreo@cweb.com', 0x3a3a31, 0x4e6f6d62726520646520686f73742e20, '', '');
 
+
+CREATE TABLE ticket_images (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  ticket_id VARCHAR(255),
+  og_name VARCHAR(255),
+  route_archivo VARCHAR(255)
+);
+
+INSERT INTO ticket_images (ticket_id, og_name, route_archivo) VALUES (?, ?, ?);
 
 -- Índices para tablas volcadas
 --
@@ -190,7 +200,14 @@ ALTER TABLE `ticket`
   MODIFY `id` INT(11) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`id`);
 
+--Añadir la columna de imágenes en el ticket
+ALTER TABLE ticket ADD COLUMN image VARCHAR(255);
 --
+
+--Identificar quien subió cada imagen
+ALTER TABLE ticket_images ADD COLUMN uploaded_by ENUM('user', 'admin') DEFAULT 'user';
+---
+
 -- Indices de la tabla `user`
 --
 ALTER TABLE `user`

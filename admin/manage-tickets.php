@@ -1,40 +1,47 @@
 <?php
 session_start();
 require 'connection.php';
-//echo $_SESSION['id'];
-//$_SESSION['msg'];
 include("dbconnection.php");
 include("checklogin.php");
 check_login();
+
+// ACTUALIZAR TICKET Y GUARDAR IMAGEN
 if (isset($_POST['update'])) {
-  $adminremark = $_POST['aremark'];
-  $fid = $_POST['frm_id'];
-  mysqli_query($con, "update ticket set admin_remark='$adminremark',status='closed' where id='$fid'");
-  echo '<script>alert("Ticket ha sido actualizado, correctamente"); location.replace(document.referrer)</script>';
-}
+    $adminremark = $_POST['aremark'];
+    $fid = $_POST['frm_id'];
+    mysqli_query($con, "UPDATE ticket SET admin_remark='$adminremark', status='closed' WHERE id='$fid'");
 
-if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-    $og_name = basename($_FILES['imagen']['name']);
-    $rutaTemporal = $_FILES['imagen']['tmp_name'];
-    $rutaDestino = 'uploads/' . uniqid() . "_" . $og_name;
+    // GUARDAR IMAGEN (si se envió)
+    if (
+        isset($_FILES['imagen']) &&
+        $_FILES['imagen']['error'] == 0 &&
+        isset($_POST['ticket_id'])
+    ) {
+        $ticket_id = $_POST['ticket_id'];
+        $og_name = basename($_FILES['imagen']['name']);
+        $rutaTemporal = $_FILES['imagen']['tmp_name'];
+        $rutaDestino = 'uploads/' . uniqid() . "_" . $og_name;
 
-    if (!is_dir('uploads')) {
-        mkdir('uploads', 0777, true);
+        // Asegurar que la carpeta existe
+        if (!is_dir('uploads')) {
+            mkdir('uploads', 0777, true);
+        }
+
+        // Mover archivo al servidor
+        if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
+            // Guardar imagen en la base de datos con 'subido_por' = 'admin'
+            $subido_por = 'admin';
+            $stmt = mysqli_prepare($con, "INSERT INTO ticket_images (ticket_id, og_name, route_archivo, uploaded_by) VALUES (?, ?, ?, ?)");
+            mysqli_stmt_bind_param($stmt, 'ssss', $ticket_id, $og_name, $rutaDestino, $uploaded_by);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+        }
     }
 
-    if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
-        // Aquí asegúrate de tener ya creado el ticket y tener su ID
-        // Ejemplo: después de insertar ticket, obtuviste:
-        // $ticket_id = $pdo->lastInsertId();
-
-        $sql = "INSERT INTO ticket_images (ticket_id, og_name, route_archivo) VALUES (?, ?, ?)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$ticket_id, $og_name, $rutaDestino]);
-    }
+    echo '<script>alert("Ticket ha sido actualizado correctamente"); location.replace(document.referrer)</script>';
 }
-
-
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -88,13 +95,14 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
       <div class="clearfix"></div>
       <?php $rt = mysqli_query($con, "select * from ticket order by id desc");
       while ($row = mysqli_fetch_array($rt)) {
-      ?>
+        ?>
         <div class="row">
           <div class="col-md-12">
             <div class="grid simple no-border">
               <div class="grid-title no-border descriptive clickable">
                 <h4 class="semi-bold"><?php echo $row['subject']; ?></h4>
-                <p><span class="text-success bold">Ticket #<?php echo $_SESSION['sid'] = $row['ticket_id']; ?></span> - Fecha de creación <?php echo $row['posting_date']; ?>
+                <p><span class="text-success bold">Ticket #<?php echo $_SESSION['sid'] = $row['ticket_id']; ?></span> -
+                  Fecha de creación <?php echo $row['posting_date']; ?>
                   <span class="label label-important"><?php echo $row['status']; ?></span>
                 </p>
                 <div class="actions"> <a class="view" href="javascript:;"><i class="fa fa-angle-down"></i></a> </div>
@@ -102,7 +110,9 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
               <div class="grid-body  no-border" style="display:none">
                 <div class="post">
                   <div class="user-profile-pic-wrapper">
-                    <div class="user-profile-pic-normal"> <img width="35" height="35" data-src-retina="../assets/img/user.png" data-src="../assets/img/user.png" src="../assets/img/user.png" alt=""> </div>
+                    <div class="user-profile-pic-normal"> <img width="35" height="35"
+                        data-src-retina="../assets/img/user.png" data-src="../assets/img/user.png"
+                        src="../assets/img/user.png" alt=""> </div>
                   </div>
                   <div class="info-wrapper">
                     <div class="info"><?php echo $row['ticket']; ?> </div>
@@ -111,33 +121,41 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
                   <div class="clearfix"></div>
                 </div>
                 <br>
+                <!-- Mostrar imagen adjunta -->
+                <?php
+                $ticketId = $row['ticket_id'];
+                $resImg = mysqli_query($con, "SELECT * FROM ticket_images WHERE ticket_id = '$ticketId'");
+                if (mysqli_num_rows($resImg) > 0) {
+                  while ($img = mysqli_fetch_assoc($resImg)) {
+                    echo '<div class="form-group">';
+                    echo '<label>Imagen adjunta:</label><br>';
+                    echo '<img src="' . htmlspecialchars($img['route_archivo']) . '" style="max-width: 300px; margin-top: 10px; border: 1px solid #ccc; padding: 5px;">';
+                    echo '</div>';
+                  }
+                } else {
+                  echo '<p><em>No se adjuntó imagen para este ticket.</em></p>';
+                }
+                ?>
                 <div class="form-actions">
                   <div class="post col-md-12">
                     <div class="user-profile-pic-wrapper">
-                      <div class="user-profile-pic-normal"> <img width="35" height="35"  src="Logo-Gobierno-en-Vertical (1).png" alt=""> </div>
+                      <div class="user-profile-pic-normal"> <img width="35" height="35"
+                          src="Logo-Gobierno-en-Vertical (1).png" alt=""> </div>
                     </div>
                     <div class="info-wrapper">
                       <form name="adminr" method="post" enctype="multipart/form-data">
                         <br>
-                        <textarea name="aremark" cols="50" rows="4" required="true"><?php echo $row['admin_remark']; ?></textarea>
+                        <textarea name="aremark" cols="50" rows="4"
+                          required="true"><?php echo $row['admin_remark']; ?></textarea>
                         <hr>
                         <div class="form-group_admin">
-                          <?php if (!empty($ticket['attachment'])): ?>
-                        <div class="mt-3">
-                          <strong>Imagen adjunta:</strong><br>
-                          <img src="<?php echo htmlspecialchars($ticket['attachment']); ?>" 
-                            alt="Imagen del ticket" 
-                            style="max-width: 400px;" 
-                            class="img-thumbnail mt-2">
                         </div>
-                      <?php else: ?>
-                        <p><em>No se adjuntó ninguna imagen.</em></p>
-                      <?php endif; ?>
-                        </div>
+                        <input type="hidden" name="ticket_id" value="<?php echo $row['ticket_id']; ?>">
+                        <label>Adjuntar imagen:</label>
+                        <input type="file" name="imagen">
                         <p class="small-text">
                           <input name="update" type="submit" class="txtbox1" id="Update" value="Actualizar" size="40" />
                           <input name="frm_id" type="hidden" id="frm_id" value="<?php echo $row['id']; ?>" />
-                        </p>
                       </form>
                     </div>
                     <div class="clearfix"></div>
@@ -147,8 +165,8 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
               </div>
             </div>
           <?php } ?>
-          </div>
         </div>
+      </div>
 
 
     </div>

@@ -1,11 +1,10 @@
 <?php
 session_start();
 require 'connection.php';
-//echo $_SESSION['id'];
-//$_SESSION['msg'];
 include("dbconnection.php");
 include("checklogin.php");
 check_login();
+
 if (isset($_POST['send'])) {
     $count_my_page = ("hitcounter.txt");
     $hits = file($count_my_page);
@@ -19,32 +18,45 @@ if (isset($_POST['send'])) {
     $tt = $_POST['tasktype'];
     $priority = $_POST['priority'];
     $ticket = $_POST['description'];
-    //$ticfile=$_FILES["tfile'"]["name"];
     $st = "Open";
     $pdate = date('Y-m-d');
-    //move_uploaded_file($_FILES["tfile"]["tmp_name"],"ticketfiles/".$_FILES["tfile"]["name"]);
-    $a = mysqli_query($con, "insert into ticket(ticket_id,email_id,subject,task_type,prioprity,ticket,status,posting_date)  values('$tid','$email','$subject','$tt','$priority','$ticket','$st','$pdate')");
+
+    // Subir imagen (si hay)
+    $img_name = "";
+    $target_file = "";
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+        $img_name = basename($_FILES['imagen']['name']);
+        $target_dir = "uploads/";
+        $target_file = $target_dir . $img_name;
+
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $target_file)) {
+            echo "<script>alert('Error al subir la imagen.');</script>";
+            $target_file = ""; // Asegura que no se guarde nada si falla
+        }
+    }
+
+    // Insertar ticket con la ruta de imagen si se subió
+    $a = mysqli_query($con, "INSERT INTO ticket(ticket_id,email_id,subject,task_type,prioprity,ticket,status,posting_date,image)  
+        VALUES('$tid','$email','$subject','$tt','$priority','$ticket','$st','$pdate','$target_file')");
+
     if ($a) {
+        // También registrar en ticket_images si se subió imagen
+        if (!empty($target_file)) {
+            $stmt_img = mysqli_prepare($con, "INSERT INTO ticket_images (ticket_id, og_name, route_archivo) VALUES (?, ?, ?)");
+            mysqli_stmt_bind_param($stmt_img, 'sss', $tid, $img_name, $target_file);
+            mysqli_stmt_execute($stmt_img);
+            mysqli_stmt_close($stmt_img);
+        }
+
         echo "<script>alert('Ticket Registrado Correctamente'); location.replace(document.referrer)</script>";
     }
 }
-
- if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
-            $og_name = basename($_FILES['imagen']['name']);
-            $rutaTemporal = $_FILES['imagen']['tmp_name'];
-            $nombreUnico = uniqid() . "_" . $og_name;
-            $rutaDestino = 'uploads/' . $nombreUnico;
-
-            if (!is_dir('uploads')) {
-                mkdir('uploads', 0777, true);
-            }
-
-            if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
-                $stmt = $pdo->prepare("INSERT INTO ticket_images (ticket_id, og_name, route_archivo) VALUES (?, ?, ?)");
-                $stmt->execute([$ticket_id, $og_name, $rutaDestino]);
-            }
-        }
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -150,20 +162,12 @@ if (isset($_POST['send'])) {
                                     <div class="form-group">
                                         <label class="col-md-3 col-xs-12 control-label"> Subir Imágen</label>
                                         <div class="col-md-6 col-xs-12">
-                                             <input type="file" class="form-control-file" name="imagen" id="imagen" accept="image/*">
+                                            <input type="file" class="form-control-file" name="imagen" id="imagen" accept="image/*">
+                                            <img src="<?= $row['route_archivo'] ?>" alt="Imagen del ticket" style="max-width: 300px;">
                                         </div>
                                     </div>
 
                                 </div>
-
-
-
-
-
-
-
-
-
                             </div>
 
                             <div class="panel-footer">

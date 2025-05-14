@@ -85,6 +85,19 @@ check_login();
                     </div>
                     <div class="info-wrapper">
                       <div class="info"><?php echo $row['ticket']; ?> </div>
+                      <?php
+                        // Mostrar imágenes asociadas al ticket
+                        $ticket_id = $row['ticket_id'];
+                        $query_img = mysqli_query($con, "SELECT * FROM ticket_images WHERE ticket_id = '$ticket_id'");
+                        if (mysqli_num_rows($query_img) > 0) {
+                          echo '<div style="margin-top: 15px;"><strong>Imágenes adjuntas:</strong><br>';
+                          while ($img = mysqli_fetch_assoc($query_img)) {
+                            echo '<img src="' . $img['route_archivo'] . '" alt="Imagen del ticket" style="max-width: 300px; margin: 10px 0; border: 1px solid #ccc; padding: 4px; display:block;">';
+                          }
+                          echo '</div>';
+                        }
+                        ?>
+
                       <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>

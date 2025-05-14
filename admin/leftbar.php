@@ -4,7 +4,7 @@
    <div class="page-sidebar-wrapper scrollbar-dynamic" id="main-menu-wrapper">
      <div class="user-info-wrapper">
        <div class="profile-wrapper" style="border:solid #fff 0px; border-radius: 10px;">
-         <img src="../assets/img/admin3.jpg" alt="" data-src="../assets/img/admin3.png" data-src-retina="../assets/img/admin3.png" class="side-user-img" />
+         <img src="Logo-Gobierno_small.png" alt="Logo" class="side-user-img" />
        </div>
        <div class="user-info">
          <div class="greeting">Bienvenido</div>
