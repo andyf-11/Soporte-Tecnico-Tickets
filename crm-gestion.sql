@@ -173,10 +173,16 @@ CREATE TABLE ticket_images (
   id INT AUTO_INCREMENT PRIMARY KEY,
   ticket_id VARCHAR(255),
   og_name VARCHAR(255),
-  route_archivo VARCHAR(255)
+  route_archivo VARCHAR(255),
+  uploaded_by VARCHAR(255)
 );
 
-INSERT INTO ticket_images (ticket_id, og_name, route_archivo) VALUES (?, ?, ?);
+INSERT INTO ticket_images (ticket_id, og_name, route_archivo, uploaded_by) VALUES (?, ?, ?, ?);
+
+ALTER TABLE ticket_images MODIFY COLUMN ticket_id INT;
+
+
+-- Restringiendo el id de los tickets
 
 -- Índices para tablas volcadas
 --
@@ -199,6 +205,7 @@ ALTER TABLE `prequest`
 ALTER TABLE `ticket`
   MODIFY `id` INT(11) NOT NULL AUTO_INCREMENT,
   ADD PRIMARY KEY (`id`);
+
 
 --Añadir la columna de imágenes en el ticket
 ALTER TABLE ticket ADD COLUMN image VARCHAR(255);

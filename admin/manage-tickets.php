@@ -4,41 +4,47 @@ require 'connection.php';
 include("dbconnection.php");
 include("checklogin.php");
 check_login();
-
 // ACTUALIZAR TICKET Y GUARDAR IMAGEN
 if (isset($_POST['update'])) {
-    $adminremark = $_POST['aremark'];
-    $fid = $_POST['frm_id'];
-    mysqli_query($con, "UPDATE ticket SET admin_remark='$adminremark', status='closed' WHERE id='$fid'");
+  $adminremark = $_POST['aremark'];
+  $fid = $_POST['frm_id'];
+  mysqli_query($con, "UPDATE ticket SET admin_remark='$adminremark', status='closed' WHERE id='$fid'");
 
-    // GUARDAR IMAGEN (si se envió)
-    if (
-        isset($_FILES['imagen']) &&
-        $_FILES['imagen']['error'] == 0 &&
-        isset($_POST['ticket_id'])
-    ) {
-        $ticket_id = $_POST['ticket_id'];
-        $og_name = basename($_FILES['imagen']['name']);
-        $rutaTemporal = $_FILES['imagen']['tmp_name'];
-        $rutaDestino = 'uploads/' . uniqid() . "_" . $og_name;
+  // GUARDAR IMAGEN (si se envió)
+  if (
+    isset($_FILES['imagen']) &&
+    $_FILES['imagen']['error'] == 0 &&
+    isset($_POST['ticket_id'])
+  ) {
+    $ticket_id = $_POST['ticket_id'];
+    $og_name = basename($_FILES['imagen']['name']);
+    $rutaTemporal = $_FILES['imagen']['tmp_name'];
+    $rutaDestino = 'uploads/' . uniqid() . "_" . $og_name;
 
-        // Asegurar que la carpeta existe
-        if (!is_dir('uploads')) {
-            mkdir('uploads', 0777, true);
-        }
-
-        // Mover archivo al servidor
-        if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
-            // Guardar imagen en la base de datos con 'subido_por' = 'admin'
-            $subido_por = 'admin';
-            $stmt = mysqli_prepare($con, "INSERT INTO ticket_images (ticket_id, og_name, route_archivo, uploaded_by) VALUES (?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, 'ssss', $ticket_id, $og_name, $rutaDestino, $uploaded_by);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
-        }
+    // Asegurar que la carpeta existe
+    if (!is_dir('uploads')) {
+      mkdir('uploads', 0777, true);
     }
 
-    echo '<script>alert("Ticket ha sido actualizado correctamente"); location.replace(document.referrer)</script>';
+    if ($img['uploaded_by'] == 'admin') {
+      echo '<strong>Imagen enviada por el administrador:</strong><br>';
+    } else {
+      echo '<strong>Imagen enviada por el usuario:</strong><br>';
+    }
+    echo '<img src="/uploads/' . htmlspecialchars($img['route_archivo']) . '" ... >';
+
+    // Mover archivo al servidor
+    if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
+      // Guardar imagen en la base de datos con 'subido_por' = 'admin'
+      $subido_por = 'admin';
+      $stmt = mysqli_prepare($con, "INSERT INTO ticket_images (ticket_id, og_name, route_archivo, uploaded_by) VALUES (?, ?, ?, ?)");
+      mysqli_stmt_bind_param($stmt, 'ssss', $ticket_id, $og_name, $rutaDestino, $subido_por);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
+    }
+  }
+
+  echo '<script>alert("Ticket ha sido actualizado correctamente"); location.replace(document.referrer)</script>';
 }
 ?>
 
@@ -127,8 +133,9 @@ if (isset($_POST['update'])) {
                 $resImg = mysqli_query($con, "SELECT * FROM ticket_images WHERE ticket_id = '$ticketId'");
                 if (mysqli_num_rows($resImg) > 0) {
                   while ($img = mysqli_fetch_assoc($resImg)) {
+                    $quien = ($img['uploaded_by'] === 'admin') ? 'Administrador' : 'Usuario';
                     echo '<div class="form-group">';
-                    echo '<label>Imagen adjunta:</label><br>';
+                    echo '<label>Imagen adjunta por: ' . $quien . '</label><br>';
                     echo '<img src="' . htmlspecialchars($img['route_archivo']) . '" style="max-width: 300px; margin-top: 10px; border: 1px solid #ccc; padding: 5px;">';
                     echo '</div>';
                   }
