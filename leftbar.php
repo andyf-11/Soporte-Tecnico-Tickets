@@ -15,7 +15,7 @@
      </div>
      <!-- END MINI-PROFILE -->
      <!-- BEGIN SIDEBAR MENU -->
-     <p class="menu-title">Opciones <span class="pull-right"><a href="javascript:;"><i class="fa fa-refresh"></i></a></span></p>
+     <p class="menu-title">Opciones <span class="pull-right"><a href="#" onClick="location.reload()"><i class="fa fa-refresh"></i></a></span></p>
      <ul>
        <li class="start"> <a href="dashboard.php"> <i class="icon-custom-home"></i> <span class="title">Dashboard</span> <span class="selected"></span> </a>
        </li>
