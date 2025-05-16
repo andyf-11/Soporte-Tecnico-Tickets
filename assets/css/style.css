@@ -27,7 +27,7 @@ body {
   background-color: #1b1e24;
   color: #6f7b8a;
   font-family: 'Arial';
-  font-size: 13px;
+  font-size: 14px;
   padding: 0px !important;
   margin: 0px !important;
   line-height: 1.5;
@@ -286,7 +286,7 @@ body.modal-open .chat-window-wrapper {
   height: 60px;
   -webkit-transition-duration: 1;
   -moz-transition-duration: 1s;
-  transition-duration: 1s;
+  transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
   -webkit-transition-property: -webkit-transform, opacity;
   -moz-transition-property: -moz-transform, opacity;
@@ -8142,7 +8142,7 @@ input[type="checkbox"] {
     background-size: cover;
     background-repeat: no-repeat;
     animation: color 12s ease-in-out infinite;
-    background: linear-gradient(45deg, #d8f6fa, #ffe4dc) !important;
+    background: linear-gradient(45deg,  #8ef0f5, #cce3e5, #ffa892) !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991.98px) {

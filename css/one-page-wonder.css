@@ -68,7 +68,7 @@ header.masthead {
 
 header.masthead .masthead-content {
   z-index: 1;
-  position: relative;
+  position: fixed;
 }
 
 header.masthead .masthead-content .masthead-heading {

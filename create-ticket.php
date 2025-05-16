@@ -163,7 +163,7 @@ if (isset($_POST['send'])) {
                                         <label class="col-md-3 col-xs-12 control-label"> Subir Imágen</label>
                                         <div class="col-md-6 col-xs-12">
                                             <input type="file" class="form-control-file" name="imagen" id="imagen" accept="image/*">
-                                            <img src="<?= $row['route_archivo'] ?>" alt="Imagen del ticket" style="max-width: 300px;">
+                                            <img src="<?= $row['route_archivo'] ?>" alt="" style="max-width: 300px;">
                                         </div>
                                     </div>
 

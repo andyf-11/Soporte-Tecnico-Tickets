@@ -411,14 +411,14 @@
     display: none !important;
   }
   .page-sidebar {
-    position: absolute;
+    position: fixed;
     width: 65px;
     margin: 0;
-    overflow: hidden;
+    overflow: auto;
     z-index: 90;
   }
   .page-sidebar .page-sidebar-wrapper {
-    overflow: hidden !important;
+    overflow: auto !important;
   }
   .page-sidebar .page-sidebar-wrapper > ul {
     width: 45px;
